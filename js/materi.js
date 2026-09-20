@@ -999,7 +999,7 @@
 
       '<div class="doc-grid">' +
         stage.docs.map(d => renderDocCard(d, stage)).join('') +
-      '</div>' +
+      '</div>' 
     );
   }
 
