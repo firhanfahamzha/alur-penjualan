@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light" data-lang="mix">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1e33" />
+<meta name="description" content="Simulasi interaktif alur penjualan Order-to-Cash: Roleplay, Puzzle Dokumen, Detektif Audit." />
+<title>Alur Penjualan Interaktif · Order-to-Cash Lab</title>
+
+<!-- Google Fonts (fallback ke system font bila offline) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%8B%3C/text%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+<!-- ============================================================
+     LOADING SPLASH
+     ============================================================ -->
+<div id="splash" class="splash" aria-hidden="false">
+  <div class="splash__inner">
+    <div class="splash__logo">
+      <svg viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
+        <defs>
+          <linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2a7de1"/>
+            <stop offset="100%" stop-color="#1d7a8c"/>
+          </linearGradient>
+        </defs>
+        <rect x="14" y="22" width="92" height="76" rx="12" fill="url(#splashGrad)"/>
+        <rect x="24" y="34" width="72" height="6" rx="3" fill="#fff" opacity=".9"/>
+        <rect x="24" y="48" width="54" height="6" rx="3" fill="#fff" opacity=".65"/>
+        <rect x="24" y="62" width="64" height="6" rx="3" fill="#fff" opacity=".65"/>
+        <rect x="24" y="76" width="40" height="6" rx="3" fill="#fff" opacity=".4"/>
+      </svg>
+    </div>
+    <div class="splash__title">Order-to-Cash Lab</div>
+    <div class="splash__sub">Menyiapkan simulasi transaksi…</div>
+    <div class="splash__bar"><div class="splash__bar-fill" id="splashBar"></div></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     LATAR DEKORATIF (blob gradient, halus)
+     ============================================================ -->
+<div class="bg-deco" aria-hidden="true">
+  <span class="blob blob--1"></span>
+  <span class="blob blob--2"></span>
+  <span class="blob blob--3"></span>
+</div>
+
+<!-- ============================================================
+     SKIP LINK (aksesibilitas)
+     ============================================================ -->
+<a href="#mainContent" class="skip-link">Lewati ke konten utama</a>
+
+<!-- ============================================================
+     TOP BAR
+     ============================================================ -->
+<header class="topbar" id="topbar">
+  <div class="topbar__left">
+    <button class="icon-btn topbar__burger" id="btnBurger" aria-label="Buka menu" title="Menu">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+
+    <a class="brand" href="#beranda" data-nav="beranda">
+      <span class="brand__mark">
+        <svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a7de1"/>
+              <stop offset="100%" stop-color="#1d7a8c"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="6" width="34" height="28" rx="6" fill="url(#brandGrad)"/>
+          <rect x="7" y="11" width="26" height="2.6" rx="1.3" fill="#fff" opacity=".95"/>
+          <rect x="7" y="17" width="20" height="2.6" rx="1.3" fill="#fff" opacity=".7"/>
+          <rect x="7" y="23" width="24" height="2.6" rx="1.3" fill="#fff" opacity=".7"/>
+          <rect x="7" y="29" width="14" height="2.6" rx="1.3" fill="#fff" opacity=".45"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <strong>Order-to-Cash</strong>
+        <em>Interactive Lab · PT Firhan Fahamzha Global</em>
+      </span>
+    </a>
+  </div>
+
+  <div class="topbar__center">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+      </svg>
+      <input type="search" id="globalSearch" placeholder="Cari dokumen, istilah, skenario…" aria-label="Cari" autocomplete="off" />
+      <kbd class="searchbox__kbd">/</kbd>
+      <div class="search-results" id="searchResults" hidden></div>
+    </div>
+  </div>
+
+  <div class="topbar__right">
+    <!-- Pilih bahasa -->
+    <div class="dropdown" data-dd="lang">
+      <button class="icon-btn" aria-haspopup="true" aria-expanded="false" title="Bahasa">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+        </svg>
+      </button>
+      <div class="dropdown__menu" role="menu">
+        <button role="menuitem" data-lang-set="id">🇮🇩 Bahasa Indonesia</button>
+        <button role="menuitem" data-lang-set="en">🇬🇧 English</button>
+        <button role="menuitem" data-lang-set="mix">🔀 Campur (ID + EN)</button>
+      </div>
+    </div>
+
+    <!-- Tema -->
+    <div class="dropdown" data-dd="theme">
+      <button class="icon-btn" id="themeBtn" aria-haspopup="true" aria-expanded="false" title="Tema">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
+        </svg>
+      </button>
+      <div class="dropdown__menu" role="menu">
+        <button role="menuitem" data-theme-set="light">☀️ Terang</button>
+        <button role="menuitem" data-theme-set="dark">🌙 Gelap</button>
+        <button role="menuitem" data-theme-set="sepia">📜 Sepia</button>
+        <button role="menuitem" data-theme-set="auto">🖥️ Ikuti Sistem</button>
+      </div>
+    </div>
+
+    <!-- Skor -->
+    <button class="score-chip" id="scoreChip" title="Lihat pencapaian">
+      <span class="score-chip__icon">🏆</span>
+      <span class="score-chip__val" id="scoreValue">0</span>
+    </button>
+
+    <!-- Fasilitator -->
+    <button class="icon-btn icon-btn--ghost" id="btnFacilitator" title="Mode Fasilitator (Ctrl+Shift+F)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     APP SHELL (sidebar + main)
+     ============================================================ -->
+<div class="app" id="app">
+
+  <!-- ---------- SIDEBAR NAVIGASI ---------- -->
+  <aside class="sidebar" id="sidebar" aria-label="Navigasi mode">
+    <div class="sidebar__scroll">
+
+      <div class="sidebar__section">
+        <div class="sidebar__label">Mode</div>
+        <nav class="nav" id="mainNav">
+          <button class="nav__item" data-nav="beranda">
+            <span class="nav__icon">🏠</span>
+            <span class="nav__text"><b>Beranda</b><i>Briefing misi &amp; role</i></span>
+            <span class="nav__mark"></span>
+          </button>
+          <button class="nav__item" data-nav="materi">
+            <span class="nav__icon">📚</span>
+            <span class="nav__text"><b>Materi Alur</b><i>5 tahap Order-to-Cash</i></span>
+            <span class="nav__mark"></span>
+          </button>
+          <button class="nav__item" data-nav="roleplay">
+            <span class="nav__icon">🎭</span>
+            <span class="nav__text"><b>Simulasi Peran</b><i>Penjual ⇄ Pembeli</i></span>
+            <span class="nav__mark" data-badge="roleplay"></span>
+          </button>
+          <button class="nav__item" data-nav="puzzle">
+            <span class="nav__icon">🧩</span>
+            <span class="nav__text"><b>Puzzle Dokumen</b><i>Susun urutan yang benar</i></span>
+            <span class="nav__mark" data-badge="puzzle"></span>
+          </button>
+          <button class="nav__item" data-nav="detektif">
+            <span class="nav__icon">🕵️</span>
+            <span class="nav__text"><b>Detektif Audit</b><i>Temukan ketidakcocokan</i></span>
+            <span class="nav__mark" data-badge="detektif"></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar__section">
+        <div class="sidebar__label">Ekstra</div>
+        <nav class="nav">
+          <button class="nav__item" data-nav="pencapaian">
+            <span class="nav__icon">🏆</span>
+            <span class="nav__text"><b>Pencapaian</b><i>Badge &amp; progres</i></span>
+          </button>
+          <button class="nav__item" data-nav="pustaka">
+            <span class="nav__icon">🗂️</span>
+            <span class="nav__text"><b>Pustaka Dokumen</b><i>16 template siap pakai</i></span>
+          </button>
+          <button class="nav__item" data-nav="pengaturan">
+            <span class="nav__icon">⚙️</span>
+            <span class="nav__text"><b>Pengaturan</b><i>Preferensi &amp; reset</i></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar__section sidebar__section--company">
+        <div class="sidebar__label">Identitas Latihan</div>
+        <div class="company-card">
+          <div class="company-card__row">
+            <span class="company-card__k">Penjual</span>
+            <span class="company-card__v">PT Firhan Fahamzha Global</span>
+          </div>
+          <div class="company-card__row">
+            <span class="company-card__k">Direktur</span>
+            <span class="company-card__v">Firhan Fahamzha</span>
+          </div>
+          <div class="company-card__row">
+            <span class="company-card__k">Pembeli</span>
+            <span class="company-card__v">Kopi Senja Group</span>
+          </div>
+          <div class="company-card__row">
+            <span class="company-card__k">Produk</span>
+            <span class="company-card__v">Arabika Gayo Grade 1</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar__footer">
+      <div class="progress-mini">
+        <div class="progress-mini__head">
+          <span>Progres sesi</span>
+          <b id="progressPct">0%</b>
+        </div>
+        <div class="progress-mini__bar"><i id="progressFill" style="width:0%"></i></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
+
+  <!-- ---------- MAIN ---------- -->
+  <main class="main" id="mainContent" tabindex="-1">
+
+    <!-- ============ VIEW: BERANDA ============ -->
+    <section class="view is-active" data-view="beranda" aria-labelledby="hBeranda">
+
+      <div class="hero">
+        <div class="hero__bg" aria-hidden="true">
+          <img
+            src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1600&q=70"
+            alt="" loading="lazy" onerror="this.style.display='none'" />
+        </div>
+        <div class="hero__inner">
+          <div class="hero__kicker">
+            <span class="pill pill--live">● Sesi Latihan Aktif</span>
+            <span class="pill">Skala Perusahaan Besar</span>
+            <span class="pill">Order-to-Cash</span>
+          </div>
+          <h1 class="hero__title" id="hBeranda">
+            Simulasi Alur Penjualan <span class="grad">Interaktif</span>
+          </h1>
+          <p class="hero__lead">
+            Dari <b>Quotation</b> Firhan Fahamzha hingga <b>Invoice</b> yang lunas — jalani peran,
+            susun dokumen, dan bongkar jejak audit. Semua dalam satu lab.
+          </p>
+
+          <div class="hero__cta">
+            <button class="btn btn--primary btn--lg" data-nav="roleplay">
+              <span>🎭</span> Mulai Simulasi Peran
+            </button>
+            <button class="btn btn--ghost btn--lg" data-nav="materi">
+              <span>📚</span> Pelajari Alur Dulu
+            </button>
+            <button class="btn btn--outline btn--lg" id="btnLanjutkan" hidden>
+              <span>⏯️</span> Lanjutkan Sesi
+            </button>
+          </div>
+
+          <div class="hero__stats">
+            <div class="stat">
+              <b data-count="5">0</b>
+              <span>Tahapan Alur</span>
+            </div>
+            <div class="stat">
+              <b data-count="18">0</b>
+              <span>Jenis Dokumen</span>
+            </div>
+            <div class="stat">
+              <b data-count="3">0</b>
+              <span>Mode Interaktif</span>
+            </div>
+            <div class="stat">
+              <b data-count="4">0</b>
+              <span>Tingkat Kesulitan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peta Mode -->
+      <div class="section">
+        <div class="section__head">
+          <h2 class="section__title">Pilih Petualanganmu</h2>
+          <p class="section__sub">Empat mode, satu cerita — bebas kamu eksplorasi sesukamu.</p>
+        </div>
+
+        <div class="mode-grid">
+          <article class="mode-card mode-card--blue" data-nav="materi" tabindex="0" role="button">
+            <div class="mode-card__glow"></div>
+            <div class="mode-card__icon">📚</div>
+            <h3>Materi Alur</h3>
+            <p>Kupas 5 tahap Order-to-Cash beserta dokumen aslinya. Ada contoh nomor, tanggal, dan fungsi tiap kertas.</p>
+            <ul class="mode-card__list">
+              <li>Accordion interaktif 5 tahap</li>
+              <li>18 kartu dokumen detail</li>
+              <li>Diagram mini alur</li>
+            </ul>
+            <span class="mode-card__go">Buka →</span>
+          </article>
+
+          <article class="mode-card mode-card--teal" data-nav="roleplay" tabindex="0" role="button">
+            <div class="mode-card__glow"></div>
+            <div class="mode-card__icon">🎭</div>
+            <h3>Simulasi Peran</h3>
+            <p>Jadi Penjual atau Pembeli. Susun dokumen sungguhan dari inquiry sampai kuitansi — lengkap dengan negosiasi harga.</p>
+            <ul class="mode-card__list">
+              <li>Panel ganda Penjual ⇄ Pembeli</li>
+              <li>Form dokumen berisi data nyata</li>
+              <li>Ronde negosiasi diskon</li>
+            </ul>
+            <span class="mode-card__go">Buka →</span>
+          </article>
+
+          <article class="mode-card mode-card--amber" data-nav="puzzle" tabindex="0" role="button">
+            <div class="mode-card__glow"></div>
+            <div class="mode-card__icon">🧩</div>
+            <h3>Puzzle Dokumen</h3>
+            <p>Dokumen diacak, urutannya hilang. Susun ulang jadi cerita transaksi yang logis — drag, lepas, validasi.</p>
+            <ul class="mode-card__list">
+              <li>3 tingkat kesulitan</li>
+              <li>Timer, hint, skor bintang</li>
+              <li>Mode buta nama (ikon saja)</li>
+            </ul>
+            <span class="mode-card__go">Buka →</span>
+          </article>
+
+          <article class="mode-card mode-card--violet" data-nav="detektif" tabindex="0" role="button">
+            <div class="mode-card__glow"></div>
+            <div class="mode-card__icon">🕵️</div>
+            <h3>Detektif Audit</h3>
+            <p>Satu bendel penjualan punya jebakan. Temukan selisih qty, diskon hilang, tanggal mundur — sebelum auditor menemukannya.</p>
+            <ul class="mode-card__list">
+              <li>3–9 error acak per ronde</li>
+              <li>Pilih alasan cross-check</li>
+              <li>Laporan akhir edukatif</li>
+            </ul>
+            <span class="mode-card__go">Buka →</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Cerita Singkat -->
+      <div class="section">
+        <div class="section__head">
+          <h2 class="section__title">Cerita di Balik Simulasi</h2>
+          <p class="section__sub">Firhan Fahamzha baru saja menerima inquiry besar dari Kopi Senja Group.</p>
+        </div>
+
+        <div class="story">
+          <div class="story__media">
+            <img
+              src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1000&q=70"
+              alt="Biji kopi arabika" loading="lazy"
+              onerror="this.parentElement.classList.add('story__media--fallback')" />
+            <div class="story__badge">SKU: FFG-ARG-500</div>
+          </div>
+          <div class="story__body">
+            <h3>500 kg Arabika Gayo · Incoterms FOB Medan</h3>
+            <p>
+              Firhan sebagai Direktur PT Firhan Fahamzha Global harus memutuskan margin, syarat pembayaran
+              (NET 30 atau DP 30%), dan jadwal kirim. Di sisi lain, Nadia dari Kopi Senja Group harus menekan
+              harga, memastikan lead time, dan mengamankan kualitas.
+            </p>
+            <p>
+              Di setiap langkah, ada dokumen yang harus diterbitkan dan dipertukarkan. Kalau salah urut atau
+              salah isi, dampaknya kerasa di pembukuan — dan di denda kontrak.
+            </p>
+            <div class="story__tags">
+              <span class="tag">RFQ</span><span class="tag">Quotation</span><span class="tag">PO</span>
+              <span class="tag">Sales Order</span><span class="tag">Delivery Order</span>
+              <span class="tag">Invoice</span><span class="tag">Credit Note</span>
+            </div>
+            <button class="btn btn--primary" data-nav="roleplay">Jalani Ceritanya →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ringkasan Alur -->
+      <div class="section">
+        <div class="section__head">
+          <h2 class="section__title">Kilas Alur (Order-to-Cash)</h2>
+          <p class="section__sub">Lima babak, satu tujuan: uang masuk dan tercatat rapi.</p>
+        </div>
+
+        <ol class="flowline">
+          <li class="flowline__item" data-nav="materi" data-target="step1">
+            <span class="flowline__dot" style="--c:#1e5f8e">1</span>
+            <div class="flowline__body">
+              <b>Pra-Penjualan &amp; Penawaran</b>
+              <i>Inquiry → Kalkulasi → Quotation → Negosiasi</i>
+            </div>
+          </li>
+          <li class="flowline__item" data-nav="materi" data-target="step2">
+            <span class="flowline__dot" style="--c:#1d7a8c">2</span>
+            <div class="flowline__body">
+              <b>Pemesanan &amp; Kredit/Kontrak</b>
+              <i>PO → Sales Order → Credit Check → Kontrak</i>
+            </div>
+          </li>
+          <li class="flowline__item" data-nav="materi" data-target="step3">
+            <span class="flowline__dot" style="--c:#2a8e6c">3</span>
+            <div class="flowline__body">
+              <b>Pemenuhan &amp; Pengiriman</b>
+              <i>Picking → Packing → Delivery Order → POD</i>
+            </div>
+          </li>
+          <li class="flowline__item" data-nav="materi" data-target="step4">
+            <span class="flowline__dot" style="--c:#b9772c">4</span>
+            <div class="flowline__body">
+              <b>Penagihan &amp; Pembayaran</b>
+              <i>Proforma → Invoice → Remittance → Bank</i>
+            </div>
+          </li>
+          <li class="flowline__item" data-nav="materi" data-target="step5">
+            <span class="flowline__dot" style="--c:#8f4e8c">5</span>
+            <div class="flowline__body">
+              <b>Pasca-Penjualan &amp; Arsip</b>
+              <i>RMA → Credit Note → Revenue → Arsip</i>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Tips Fasilitator -->
+      <div class="section">
+        <div class="callout callout--info">
+          <div class="callout__icon">💡</div>
+          <div class="callout__body">
+            <b>Untuk Fasilitator</b>
+            <p>
+              Buka <b>Mode Fasilitator</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>) untuk mengatur
+              jumlah error, mengacak ulang data dokumen, membuka kunci mode, dan mengekspor hasil sesi
+              (JSON/CSV). Cocok untuk sesi 2 jam atau workshop maraton.
+            </p>
+            <button class="btn btn--sm btn--outline" id="btnFacilitatorInline">Buka Mode Fasilitator</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============ VIEW: MATERI ============ -->
+    <section class="view" data-view="materi" aria-labelledby="hMateri">
+      <div class="view__head">
+        <h2 id="hMateri">📚 Materi Alur Order-to-Cash</h2>
+        <p>Klik tiap tahap untuk melihat proses &amp; dokumennya. Data dimuat dari <code>js/materi.js</code>.</p>
+      </div>
+      <div id="materiMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: ROLEPLAY ============ -->
+    <section class="view" data-view="roleplay" aria-labelledby="hRoleplay">
+      <div class="view__head">
+        <h2 id="hRoleplay">🎭 Simulasi Peran (Roleplay)</h2>
+        <p>Pilih peran, isi formulir dokumen, dan tukarkan dengan pihak lain.</p>
+      </div>
+      <div id="roleplayMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: PUZZLE ============ -->
+    <section class="view" data-view="puzzle" aria-labelledby="hPuzzle">
+      <div class="view__head">
+        <h2 id="hPuzzle">🧩 Puzzle Alur Dokumen</h2>
+        <p>Seret kartu dokumen ke slot yang benar. Validasi saat kamu siap.</p>
+      </div>
+      <div id="puzzleMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: DETEKTIF ============ -->
+    <section class="view" data-view="detektif" aria-labelledby="hDetektif">
+      <div class="view__head">
+        <h2 id="hDetektif">🕵️ Detektif Audit</h2>
+        <p>Satu bendel penjualan, beberapa ketidakcocokan. Temukan semuanya.</p>
+      </div>
+      <div id="detektifMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: PENCAPAIAN ============ -->
+    <section class="view" data-view="pencapaian" aria-labelledby="hPencapaian">
+      <div class="view__head">
+        <h2 id="hPencapaian">🏆 Pencapaian</h2>
+        <p>Badge, progres, dan riwayat sesi kamu tersimpan di perangkat ini.</p>
+      </div>
+      <div id="achievementsMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: PUSTAKA ============ -->
+    <section class="view" data-view="pustaka" aria-labelledby="hPustaka">
+      <div class="view__head">
+        <h2 id="hPustaka">🗂️ Pustaka Dokumen</h2>
+        <p>Contoh template dokumen siap cetak. Data dimuat dari <code>js/materi.js</code>.</p>
+      </div>
+      <div id="libraryMount" class="mount"></div>
+    </section>
+
+    <!-- ============ VIEW: PENGATURAN ============ -->
+    <section class="view" data-view="pengaturan" aria-labelledby="hPengaturan">
+      <div class="view__head">
+        <h2 id="hPengaturan">⚙️ Pengaturan</h2>
+        <p>Preferensi tampilan, bahasa, data sesi, dan reset.</p>
+      </div>
+      <div id="settingsMount" class="mount"></div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="footer__col">
+        <b>Order-to-Cash Interactive Lab</b>
+        <span>PT Firhan Fahamzha Global · Divisi Pelatihan</span>
+      </div>
+      <div class="footer__col">
+        <b>Fokus KPI</b>
+        <span>Days Sales Outstanding (DSO) · Audit Trail</span>
+      </div>
+      <div class="footer__col">
+        <b>Versi</b>
+        <span id="appVersion">v1.0.0 · build 8-part</span>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ============================================================
+     MODAL / TOAST / OVERLAY GLOBAL
+     ============================================================ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <header class="modal__head">
+      <h3 id="modalTitle">Judul</h3>
+      <button class="icon-btn" data-modal-close aria-label="Tutup">✕</button>
+    </header>
+    <div class="modal__body" id="modalBody"></div>
+    <footer class="modal__foot" id="modalFoot"></footer>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+<!-- ============================================================
+     SCRIPT
+     ============================================================ -->
+<script src="js/i18n.js" defer></script>
+<script src="js/store.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/materi.js" defer></script>
+<script src="js/roleplay.js" defer></script>
+<script src="js/puzzle.js" defer></script>
+<script src="js/detektif.js" defer></script>
+<script src="js/gamifikasi.js" defer></script>
+<script src="js/fasilitator.js" defer></script>
+<script src="js/export.js" defer></script>
+</body>
+</html>

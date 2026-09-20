@@ -1,0 +1,534 @@
+/* ============================================================
+   ANIMATIONS.CSS — Semua keyframes & kelas animasi
+   ============================================================ */
+
+/* ============================================================
+   1. FADE
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.anim-fade { animation: fadeIn .4s ease both; }
+.anim-fade-up { animation: fadeUp .45s cubic-bezier(.2, .8, .2, 1) both; }
+.anim-fade-down { animation: fadeDown .45s cubic-bezier(.2, .8, .2, 1) both; }
+.anim-fade-left { animation: fadeLeft .45s cubic-bezier(.2, .8, .2, 1) both; }
+.anim-fade-right { animation: fadeRight .45s cubic-bezier(.2, .8, .2, 1) both; }
+
+/* Stagger helper */
+.stagger > * { opacity: 0; animation: fadeUp .5s cubic-bezier(.2, .8, .2, 1) both; }
+.stagger > *:nth-child(1)  { animation-delay: .02s; }
+.stagger > *:nth-child(2)  { animation-delay: .06s; }
+.stagger > *:nth-child(3)  { animation-delay: .10s; }
+.stagger > *:nth-child(4)  { animation-delay: .14s; }
+.stagger > *:nth-child(5)  { animation-delay: .18s; }
+.stagger > *:nth-child(6)  { animation-delay: .22s; }
+.stagger > *:nth-child(7)  { animation-delay: .26s; }
+.stagger > *:nth-child(8)  { animation-delay: .30s; }
+.stagger > *:nth-child(9)  { animation-delay: .34s; }
+.stagger > *:nth-child(10) { animation-delay: .38s; }
+.stagger > *:nth-child(11) { animation-delay: .42s; }
+.stagger > *:nth-child(12) { animation-delay: .46s; }
+
+/* ============================================================
+   2. VIEW TRANSITION (pergantian halaman)
+   ============================================================ */
+@keyframes viewIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.985);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ============================================================
+   3. SPLASH
+   ============================================================ */
+@keyframes splashPop {
+  0%   { transform: scale(.6) rotate(-8deg); opacity: 0; }
+  60%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ============================================================
+   4. BACKGROUND BLOBS
+   ============================================================ */
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(40px, -30px) scale(1.08); }
+  66%      { transform: translate(-30px, 30px) scale(.96); }
+}
+
+/* ============================================================
+   5. DROPDOWN
+   ============================================================ */
+@keyframes ddIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   6. MODAL
+   ============================================================ */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================================
+   7. TOAST
+   ============================================================ */
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(60px) scale(.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    max-height: 200px;
+    margin-bottom: 0;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(60px) scale(.9);
+    max-height: 0;
+    margin-bottom: -10px;
+  }
+}
+
+/* ============================================================
+   8. SHIMMER (skeleton & progress)
+   ============================================================ */
+@keyframes shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+@keyframes shimmerMove {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* ============================================================
+   9. SHAKE (validasi salah)
+   ============================================================ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  30%      { transform: translateX(7px); }
+  45%      { transform: translateX(-5px); }
+  60%      { transform: translateX(4px); }
+  75%      { transform: translateX(-2px); }
+}
+.shake { animation: shake .45s ease; }
+
+/* ============================================================
+   10. PULSE
+   ============================================================ */
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .75; transform: scale(1.03); }
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 var(--primary-glow); }
+  70%  { box-shadow: 0 0 0 12px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 25%, transparent); }
+  50%      { box-shadow: 0 0 0 6px color-mix(in srgb, var(--green) 10%, transparent); }
+}
+
+/* ============================================================
+   11. POP-IN (kartu masuk)
+   ============================================================ */
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(.85); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in { animation: popIn .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+
+/* ============================================================
+   12. PAPER-IN (dokumen muncul)
+   ============================================================ */
+@keyframes paperIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) rotate(-2deg) scale(.95);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ============================================================
+   13. CORRECT / WRONG
+   ============================================================ */
+@keyframes correctPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px) rotate(-1deg); }
+  40%      { transform: translateX(6px) rotate(1deg); }
+  60%      { transform: translateX(-4px) rotate(-.5deg); }
+  80%      { transform: translateX(4px) rotate(.5deg); }
+}
+.wrong-shake { animation: wrongShake .5s ease; }
+
+/* ============================================================
+   14. STAR POP
+   ============================================================ */
+@keyframes starPop {
+  0%   { transform: scale(0) rotate(-90deg); opacity: 0; }
+  60%  { transform: scale(1.35) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ============================================================
+   15. BADGE POP
+   ============================================================ */
+@keyframes badgePop {
+  0%   { transform: scale(0) rotate(-40deg); }
+  55%  { transform: scale(1.25) rotate(12deg); }
+  80%  { transform: scale(.95) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* ============================================================
+   16. SPIN
+   ============================================================ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spin { animation: spin 1s linear infinite; }
+
+/* ============================================================
+   17. BOUNCE (ikon menarik perhatian)
+   ============================================================ */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.bounce { animation: bounce 1.6s ease-in-out infinite; }
+.bounce-slow { animation: bounce 3s ease-in-out infinite; }
+
+/* ============================================================
+   18. FLOAT
+   ============================================================ */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+/* ============================================================
+   19. WIGGLE (drag source menunggu)
+   ============================================================ */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+/* ============================================================
+   20. GLOW
+   ============================================================ */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--primary-glow); }
+  50%      { box-shadow: 0 0 24px 6px var(--primary-glow); }
+}
+.glow { animation: glow 2.5s ease-in-out infinite; }
+
+/* ============================================================
+   21. TYPE-IN (teks mengetik)
+   ============================================================ */
+@keyframes typeIn {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+.type-in {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typeIn 1.2s steps(30, end) both;
+}
+
+/* ============================================================
+   22. HIGHLIGHT FLASH (dokumen baru di-highlight)
+   ============================================================ */
+@keyframes flashHighlight {
+  0%   { background-color: transparent; }
+  25%  { background-color: var(--primary-soft); }
+  100% { background-color: transparent; }
+}
+.flash-highlight { animation: flashHighlight 1.2s ease both; }
+
+/* ============================================================
+   23. CONFETTI
+   ============================================================ */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-20vh) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg) scale(.6);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   24. SLIDE-IN PANEL
+   ============================================================ */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(40px); }
+}
+
+/* ============================================================
+   25. PROGRESS RING (step melingkar)
+   ============================================================ */
+@keyframes ringFill {
+  from { stroke-dashoffset: var(--ring-circ); }
+  to   { stroke-dashoffset: var(--ring-off); }
+}
+
+/* ============================================================
+   26. COUNT-UP (angka hero naik)
+   ============================================================ */
+@keyframes countUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.count-up { animation: countUp .6s cubic-bezier(.2, .8, .2, 1) both; }
+
+/* ============================================================
+   27. ZOOM IN/OUT
+   ============================================================ */
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes zoomOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(.85); }
+}
+.zoom-in { animation: zoomIn .35s cubic-bezier(.2, .8, .2, 1) both; }
+.zoom-out { animation: zoomOut .28s ease both; }
+
+/* ============================================================
+   28. SLIDE DOWN REVEAL (accordion konten)
+   ============================================================ */
+@keyframes slideDownReveal {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   29. FLIP (kartu dua sisi)
+   ============================================================ */
+.flip-3d {
+  perspective: 1000px;
+}
+.flip-3d__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+  transform-style: preserve-3d;
+}
+.flip-3d.is-flipped .flip-3d__inner { transform: rotateY(180deg); }
+.flip-3d__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: inherit;
+}
+.flip-3d__back { transform: rotateY(180deg); }
+
+/* ============================================================
+   30. TIMER WARNING
+   ============================================================ */
+@keyframes timerWarn {
+  0%, 100% { background: var(--red-soft); }
+  50%      { background: color-mix(in srgb, var(--red-soft) 50%, var(--bg-elev)); }
+}
+.timer-warn { animation: timerWarn 1s ease-in-out infinite; }
+
+/* ============================================================
+   31. ATTENTION SEEKER
+   ============================================================ */
+@keyframes attention {
+  0%, 100% { transform: scale(1); }
+  10%      { transform: scale(1.04); }
+  20%      { transform: scale(1); }
+  30%      { transform: scale(1.04); }
+  40%      { transform: scale(1); }
+}
+.attention { animation: attention 1.4s ease-in-out; }
+
+/* ============================================================
+   32. DRAG DROP LIFT
+   ============================================================ */
+@keyframes liftUp {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-6px) scale(1.03); }
+}
+
+/* ============================================================
+   33. REVEAL SCORE (angka bergulir)
+   ============================================================ */
+@keyframes revealScore {
+  0%   { transform: scale(0.6); opacity: 0; }
+  50%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.reveal-score { animation: revealScore .6s cubic-bezier(.2, 1.4, .4, 1) both; }
+
+/* ============================================================
+   34. RIPPLE (klik tombol)
+   ============================================================ */
+@keyframes rippleOut {
+  from { transform: scale(0); opacity: .55; }
+  to   { transform: scale(2.4); opacity: 0; }
+}
+.ripple-elt {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .6);
+  pointer-events: none;
+  animation: rippleOut .6s ease-out forwards;
+}
+html[data-theme="dark"] .ripple-elt { background: rgba(0, 0, 0, .35); }
+
+/* ============================================================
+   35. ACCORDION ICON ROTATION
+   ============================================================ */
+@keyframes chevFlip {
+  from { transform: rotate(0); }
+  to   { transform: rotate(180deg); }
+}
+
+/* ============================================================
+   36. BORDER DASH MARCH (bonus, drag-over)
+   ============================================================ */
+@keyframes marchDash {
+  to { stroke-dashoffset: -40; }
+}
+
+/* ============================================================
+   37. NUMBER TICK
+   ============================================================ */
+@keyframes tickUp {
+  0%   { transform: translateY(100%); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================================================
+   38. PARTICLES (score +N melayang)
+   ============================================================ */
+@keyframes scoreFloat {
+  0% {
+    transform: translateY(0) scale(.8);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-10px) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70px) scale(1);
+    opacity: 0;
+  }
+}
+.score-float {
+  position: fixed;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--green);
+  pointer-events: none;
+  z-index: 800;
+  animation: scoreFloat 1.4s cubic-bezier(.2, .8, .2, 1) forwards;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+}
+
+/* ============================================================
+   39. ROLE SWAP (panel bergeser)
+   ============================================================ */
+@keyframes panelSwap {
+  0%   { opacity: 1; transform: translateX(0); }
+  45%  { opacity: 0; transform: translateX(-30px); }
+  55%  { opacity: 0; transform: translateX(30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.panel-swap { animation: panelSwap .7s cubic-bezier(.4, 0, .2, 1) both; }
+
+/* ============================================================
+   40. REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .blob,
+  .floaty,
+  .bounce,
+  .bounce-slow,
+  .pulseSoft { animation: none !important; }
+  .progress__bar::after { animation: none !important; }
+  .splash { transition: none !important; }
+}
